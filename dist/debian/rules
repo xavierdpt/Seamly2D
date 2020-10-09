@@ -5,14 +5,23 @@
 
   APPNAME := Seamly2D
 
+  QT_BASE_DIR := /opt/qt513
+  QTDIR := =$(QT_BASE_DIR)
+  PATH := $(QT_BASE_DIR)/bin:$(PATH)
+
   DEB_HOST_ARCH := $(shell dpkg-architecture -qDEB_HOST_ARCH)
   ifeq ($(DEB_HOST_ARCH),amd64)
     LIBPATH:= /debian/tmp/usr/lib/x86_64-linux-gnu/Seamly2D
     PREFIX_LIB:= /usr/lib/x86_64-linux-gnu/Seamly2D
+    LD_LIBRARY_PATH := $(QT_BASE_DIR)/lib/x86_64-linux-gnu:$(QT_BASE_DIR)/lib:$(LD_LIBRARY_PATH)
   else
     LIBPATH:= /debian/tmp/usr/lib/i386-linux-gnu/Seamly2D
     PREFIX_LIB:= /usr/lib/i386-linux-gnu/Seamly2D
+    LD_LIBRARY_PATH := $(QT_BASE_DIR)/lib/i386-linux-gnu:$(QT_BASE_DIR)/lib:$(LD_LIBRARY_PATH)
   endif
+
+  PKG_CONFIG_PATH := $(QT_BASE_DIR)/lib/pkgconfig:$(PKG_CONFIG_PATH)
+
 
   builddir: 
 	mkdir -p builddir
