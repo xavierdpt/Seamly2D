@@ -3,11 +3,11 @@ Section: graphics
 Priority: optional
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 XSBC-Original-Maintainer: Susan Spencer <susan.spencer@gmail.com>
-Build-Depends: debhelper (>= 9.0.0), 
+Build-Depends: debhelper (>= 9.0.0),
+	       qt513-meta-full (>= 5.13.0), 
                qtbase5-dev (>= 5.2.0), 
                libqt5svg5-dev (>= 5.2.0), 
                g++ (>= 4.7.0),
-	       git (>= 2.15.0), 
                qt5-default (>= 5.2.0), 
                qttools5-dev-tools (>= 5.2.0), 
                libqt5xmlpatterns5-dev (>= 5.2.0)
