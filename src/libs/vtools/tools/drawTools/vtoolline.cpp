@@ -220,7 +220,7 @@ void VToolLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 {
     const qreal width = ScaleWidth(m_isHovered ? widthMainLine : widthHairLine, SceneScale(scene()));
 
-    setPen(QPen(CorrectColor(this, lineColor), width, LineStyleToPenStyle(m_lineType)));
+    setPen(QPen(CorrectColor(this, lineColor), width, lineTypeToPenStyle(m_lineType)));
 
     QGraphicsLineItem::paint(painter, option, widget);
 }
@@ -435,7 +435,7 @@ void VToolLine::SetVisualization()
 
         visual->setObject1Id(firstPoint);
         visual->setPoint2Id(secondPoint);
-        visual->setLineStyle(LineStyleToPenStyle(m_lineType));
+        visual->setLineStyle(lineTypeToPenStyle(m_lineType));
         visual->RefreshGeometry();
     }
 }

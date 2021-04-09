@@ -51,6 +51,8 @@
 
 #include "ifcdef.h"
 
+#include "../vmisc/diagnostic.h"
+
 #include <QBrush>
 #include <QIcon>
 #include <QMap>
@@ -61,12 +63,8 @@
 #include <QStringData>
 #include <QStringDataPtr>
 
-#include "../vmisc/diagnostic.h"
-
-const QString CustomMSign    = QStringLiteral("@");
-const QString CustomIncrSign = QStringLiteral("#");
-
-
+const QString CustomMSign     = QStringLiteral("@");
+const QString CustomIncrSign  = QStringLiteral("#");
 
 const QString AttrType        = QStringLiteral("type");
 const QString AttrMx          = QStringLiteral("mx");
@@ -155,26 +153,26 @@ const QString LineTypeDashDotDotLine = QStringLiteral("dashDotDotLine");
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
- * @brief Styles return list of all line styles.
- * @return list of all line styles.
+ * @brief lineTypeList() return list of all line types.
+ * @return list of all line types.
  */
-QStringList StylesList()
+QStringList lineTypeList()
 {
-    const QStringList styles = QStringList() << LineTypeNone    << LineTypeSolidLine << LineTypeDashLine
+    const QStringList types = QStringList() << LineTypeNone    << LineTypeSolidLine << LineTypeDashLine
                                              << LineTypeDotLine << LineTypeDashDotLine
                                              << LineTypeDashDotDotLine;
-    return styles;
+    return types;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
- * @brief LineStyle return pen style for current line style.
+ * @brief lineTypeToPenStyle return pen style for current line type.
  * @return pen style.
  */
-Qt::PenStyle LineStyleToPenStyle(const QString &lineType)
+Qt::PenStyle lineTypeToPenStyle(const QString &lineType)
 {
-    const QStringList styles = StylesList();
-    switch (styles.indexOf(lineType))
+    const QStringList types = lineTypeList();
+    switch (types.indexOf(lineType))
     {
         case 0: // LineTypeNone
             return Qt::NoPen;
@@ -192,7 +190,7 @@ Qt::PenStyle LineStyleToPenStyle(const QString &lineType)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString PenStyleToLineStyle(Qt::PenStyle penStyle)
+QString penStyleToLineType(Qt::PenStyle penStyle)
 {
     QT_WARNING_PUSH
     QT_WARNING_DISABLE_GCC("-Wswitch-default")
@@ -222,11 +220,11 @@ QString PenStyleToLineStyle(Qt::PenStyle penStyle)
 QMap<QString, QIcon> LineStylesPics()
 {
     QMap<QString, QIcon> map;
-    const QStringList styles = StylesList();
+    const QStringList styles = lineTypeList();
 
     for (int i=0; i < styles.size(); ++i)
     {
-        const Qt::PenStyle style = LineStyleToPenStyle(styles.at(i));
+        const Qt::PenStyle style = lineTypeToPenStyle(styles.at(i));
         QPixmap pix(80, 14);
         pix.fill(Qt::white);
 

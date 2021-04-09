@@ -134,7 +134,7 @@ void DialogHeight::SetPointName(const QString &value)
 void DialogHeight::SetTypeLine(const QString &value)
 {
     ChangeCurrentData(ui->comboBoxLineType, value);
-    vis->setLineStyle(LineStyleToPenStyle(value));
+    vis->setLineStyle(lineTypeToPenStyle(value));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -263,7 +263,7 @@ void DialogHeight::SaveData()
     line->setObject1Id(GetBasePointId());
     line->setLineP1Id(GetP1LineId());
     line->setLineP2Id(GetP2LineId());
-    line->setLineStyle(LineStyleToPenStyle(GetTypeLine()));
+    line->setLineStyle(lineTypeToPenStyle(GetTypeLine()));
     line->RefreshGeometry();
 }
 

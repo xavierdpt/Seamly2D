@@ -211,5 +211,5 @@ void VSimpleCurve::ScalePenWidth()
     }
 
     width = ScaleWidth(width, SceneScale(scene()));
-    setPen(QPen(CorrectColor(this, m_curve->GetColor()), width, LineStyleToPenStyle(m_curve->GetPenStyle())));
+    setPen(QPen(CorrectColor(this, m_curve->GetColor()), width, lineTypeToPenStyle(m_curve->GetPenStyle())));
 }

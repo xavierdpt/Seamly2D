@@ -2,7 +2,7 @@
  *                                                                         *
  *   Copyright (C) 2017  Seamly, LLC                                       *
  *                                                                         *
- *   https://github.com/fashionfreedom/seamly2d                             *
+ *   https://github.com/fashionfreedom/seamly2d                            *
  *                                                                         *
  ***************************************************************************
  **
@@ -52,12 +52,12 @@
 #ifndef IFCDEF_H
 #define IFCDEF_H
 
+#include "../vmisc/def.h"
+#include "../vmisc/diagnostic.h"
+
 #include <QString>
 #include <QStringList>
 #include <QtGlobal>
-
-#include "../vmisc/def.h"
-#include "../vmisc/diagnostic.h"
 
 extern const QString CustomMSign;
 extern const QString CustomIncrSign;
@@ -172,9 +172,9 @@ extern const QString LineTypeDotLine;
 extern const QString LineTypeDashDotLine;
 extern const QString LineTypeDashDotDotLine;
 
-QStringList          StylesList();
-Qt::PenStyle         LineStyleToPenStyle(const QString &lineType);
-QString              PenStyleToLineStyle(Qt::PenStyle penStyle);
+QStringList          lineTypeList();
+Qt::PenStyle         lineTypeToPenStyle(const QString &lineType);
+QString              penStyleToLineType(Qt::PenStyle penStyle);
 QMap<QString, QIcon> LineStylesPics();
 QMap<QString, QIcon> CurvePenStylesPics();
 
