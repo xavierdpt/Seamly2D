@@ -52,6 +52,9 @@ private:
     Ui::PreferencesGraphicsViewPage  *ui;
     bool                              m_zrbPositiveColorChanged;
     bool                              m_zrbNegativeColorChanged;
+    bool                              m_defaultColorChanged;
+    bool                              m_defaultLineTypeChanged;
+    //bool                              m_defaultLineWeightChanged;
 };
 
 #endif // PREFERENCES_GRAPHICSVIEWPAGE_H

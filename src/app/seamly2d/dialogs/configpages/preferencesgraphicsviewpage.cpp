@@ -28,6 +28,7 @@
 
 #include "preferencesgraphicsviewpage.h"
 #include "ui_preferencesgraphicsviewpage.h"
+
 #include "../../core/vapplication.h"
 #include "../vpatterndb/pmsystems.h"
 #include "../vmisc/logging.h"
@@ -49,6 +50,9 @@ PreferencesGraphicsViewPage::PreferencesGraphicsViewPage (QWidget *parent)
     , ui(new Ui::PreferencesGraphicsViewPage )
     , m_zrbPositiveColorChanged(false)
     , m_zrbNegativeColorChanged(false)
+    , m_defaultColorChanged(false)
+    , m_defaultLineTypeChanged(false)
+    //, m_defaultLineWeightChanged(false)
 {
     ui->setupUi(this);
     // Appearance preferences
@@ -79,6 +83,44 @@ PreferencesGraphicsViewPage::PreferencesGraphicsViewPage (QWidget *parent)
     {
         m_zrbNegativeColorChanged = true;
     });
+
+    //----------------------- Default Pentoobar
+    //----------------------- Default Line Color
+    index = ui->defaultPenColor_ComboBox->findText(qApp->Seamly2DSettings()->getDefaultLineColor());
+    if (index != -1)
+    {
+        ui->defaultPenColor_ComboBox->setCurrentIndex(index);
+    }
+    connect(ui->defaultPenColor_ComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this]()
+    {
+        m_defaultColorChanged = true;
+    });
+
+    //----------------------- Default Line Type
+    index = ui->defaultPenLineType_ComboBox->findText(qApp->Seamly2DSettings()->getDefaultLineType());
+    if (index != -1)
+    {
+        ui->defaultPenLineType_ComboBox->setCurrentIndex(index);
+    }
+    connect(ui->defaultPenLineType_ComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, [this]()
+    {
+        m_defaultLineTypeChanged = true;
+    });
+
+    /**
+        //----------------------- Default Line Weight
+        index = ui->defaultPenLineWeight_ComboBox->findText(qApp->Seamly2DSettings()->getDefaultLineWeight());
+        if (index != -1)
+        {
+            ui->defaultPenLineWeight_ComboBox->setCurrentIndex(index);
+        }
+        connect(ui->defaultPenLineWeight_ComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                this, [this]()
+        {
+            m_defaultLineWeightChanged = true;
+        });
+    **/
 
     // Navigation preferences
     // Show Scroll Bars
@@ -139,6 +181,25 @@ void PreferencesGraphicsViewPage::Apply()
       settings->setZoomRBNegativeColor(ui->zrbNegativeColor_ComboBox->currentText());
       m_zrbNegativeColorChanged = false;
     }
+
+    if (m_defaultColorChanged)
+    {
+      settings->setDefaultLineColor(ui->defaultPenColor_ComboBox->currentText());
+      m_defaultColorChanged = false;
+    }
+
+    if (m_defaultLineTypeChanged)
+    {
+      settings->setDefaultLineType(ui->defaultPenLineType_ComboBox->currentText());
+      m_defaultLineTypeChanged = false;
+    }
+    /**
+        if (m_defaultLineWeightChanged)
+        {
+          settings->setDefaultLineWeight(ui->defaultPenLineWeight_ComboBox->currentText());
+          m_defaultLineWeightChanged = false;
+        }
+    **/
 
     // Navigation preferences
     // Scroll Bars

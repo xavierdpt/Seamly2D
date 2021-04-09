@@ -51,42 +51,44 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
+#include "../vformat/vmeasurements.h"
 #include "../vgeometry/vspline.h"
 #include "../ifc/exception/vexceptionobjecterror.h"
 #include "../ifc/exception/vexceptionconversionerror.h"
 #include "../ifc/exception/vexceptionemptyparameter.h"
 #include "../ifc/exception/vexceptionwrongid.h"
 #include "../ifc/exception/vexceptionundo.h"
-#include "version.h"
-#include "core/vapplication.h"
-#include "../vmisc/customevents.h"
-#include "../vmisc/vsettings.h"
-#include "../vmisc/def.h"
-#include "../vmisc/qxtcsvmodel.h"
-#include "../vmisc/dialogs/dialogexporttocsv.h"
-#include "undocommands/renamepp.h"
-#include "core/vtooloptionspropertybrowser.h"
-#include "options.h"
 #include "../ifc/xml/vpatternconverter.h"
-#include "../vmisc/logging.h"
-#include "../vformat/vmeasurements.h"
-#include "../ifc/xml/vvstconverter.h"
 #include "../ifc/xml/vvitconverter.h"
+#include "../ifc/xml/vvstconverter.h"
+#include "../qmuparser/qmuparsererror.h"
+#include "../vmisc/customevents.h"
+#include "../vmisc/def.h"
+#include "../vmisc/logging.h"
+#include "../vmisc/qxtcsvmodel.h"
+#include "../vmisc/vsettings.h"
+#include "../vmisc/dialogs/dialogexporttocsv.h"
+#include "../vpatterndb/vpiecepath.h"
+#include "../vtools/dialogs/support/dialogeditlabel.h"
+#include "../vtools/dialogs/tooldialogs.h"
+#include "../vtools/tools/drawTools/drawtools.h"
+#include "../vtools/undocommands/addgroup.h"
 #include "../vwidgets/vwidgetpopup.h"
 #include "../vwidgets/vmaingraphicsscene.h"
-#include "../vtools/tools/drawTools/drawtools.h"
-#include "../vtools/dialogs/tooldialogs.h"
+#include "../vwidgets/penstyle_toolbar.h"
+#include "core/vapplication.h"
+#include "core/vtooloptionspropertybrowser.h"
+#include "dialogs/dialogs.h"
+#include "dialogs/vwidgetdetails.h"
+#include "dialogs/vwidgetgroups.h"
 #include "tools/vtoolseamallowance.h"
 #include "tools/nodeDetails/vtoolinternalpath.h"
 #include "tools/nodeDetails/vtoolpin.h"
 #include "tools/vtooluniondetails.h"
-#include "dialogs/dialogs.h"
-#include "dialogs/vwidgetgroups.h"
-#include "../vtools/undocommands/addgroup.h"
-#include "dialogs/vwidgetdetails.h"
-#include "../vpatterndb/vpiecepath.h"
-#include "../qmuparser/qmuparsererror.h"
-#include "../vtools/dialogs/support/dialogeditlabel.h"
+#include "undocommands/renamepp.h"
+#include "version.h"
+#include "options.h"
 
 #include <QInputDialog>
 #include <QtDebug>
@@ -177,6 +179,7 @@ MainWindow::MainWindow(QWidget *parent)
     , lock(nullptr)
     , toolButtonPointerList()
     , zoomScaleSpinBox(nullptr)
+    , m_penStyleToolBar(nullptr)
 {
     for (int i = 0; i < MaxRecentFiles; ++i)
     {
@@ -205,10 +208,11 @@ MainWindow::MainWindow(QWidget *parent)
     qApp->setCurrentDocument(doc);
 
     InitDocksContain();
-    CreateMenus();
+    createMenus();
     initDraftToolBar();
     initModesToolBar();
     InitToolButtons();
+    initPenStyleToolBar();
 
     helpLabel = new QLabel(QObject::tr("Create new pattern piece to start working."));
     ui->statusBar->addWidget(helpLabel);
@@ -2111,6 +2115,24 @@ void MainWindow::initModesToolBar()
     rightGoToStage = new QLabel(this);
     rightGoToStage->setPixmap(QPixmap("://icon/24x24/left_to_right_arrow.png"));
     ui->mode_ToolBar->insertWidget(ui->layoutMode_Action, rightGoToStage);
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+/**
+ * @brief initPenToolBar enable default line type   &color toolbar.
+ */
+void MainWindow::initPenStyleToolBar()
+{
+
+    qCDebug(vMainWindow, "initPenToolBar enable default line type   &color toolbar.");
+
+    m_penStyleToolBar = new PenStyleToolBar(doc, "Pen ToolBar", this);
+    m_penStyleToolBar->setObjectName("Pen ToolBar");
+    //m_penStyleToolBar->setCurrentGroup("noGroup");
+    m_penStyleToolBar->setCurrentColor(qApp->Seamly2DSettings()->getDefaultLineColor());
+    //m_penStyleToolBar->setCurrentLineWeight(qApp->Seamly2DSettings()->getDefaultLineWeight());
+    m_penStyleToolBar->setCurrentLineType(qApp->Seamly2DSettings()->getDefaultLineType());
+    this->addToolBar(m_penStyleToolBar);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -4238,6 +4260,9 @@ void MainWindow::setEnableTools(bool enable)
     ui->patternPiece_Action->setEnabled(pieceTools);
     ui->layout_Action->setEnabled(layoutTools);
 
+    //enable Pen Toolbar
+    m_penStyleToolBar->setEnabled(draftTools);
+
     //Menu Actions
     //Points
     ui->midpoint_Action->setEnabled(draftTools);
@@ -4539,7 +4564,7 @@ void MainWindow::UpdateRecentFileActions()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void MainWindow::CreateMenus()
+void MainWindow::createMenus()
 {
     //Add last 5 most recent projects to file menu.
     for (int i = 0; i < MaxRecentFiles; ++i)
@@ -4570,7 +4595,7 @@ void MainWindow::CreateMenus()
     separatorAct->setSeparator(true);
     ui->edit_Menu->addAction(separatorAct);
 
-    AddDocks();
+    addDocks();
 
     separatorAct = new QAction(this);
     separatorAct->setSeparator(true);
@@ -4869,7 +4894,7 @@ void MainWindow::LastUsedTool()
 QT_WARNING_POP
 
 //---------------------------------------------------------------------------------------------------------------------
-void MainWindow::AddDocks()
+void MainWindow::addDocks()
 {
     //Add dock
     actionDockWidgetToolOptions = ui->toolProperties_DockWidget->toggleViewAction();

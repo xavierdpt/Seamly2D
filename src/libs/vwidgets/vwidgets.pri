@@ -3,6 +3,8 @@
 
 SOURCES += \
     $$PWD/color_combobox.cpp \
+    $$PWD/linetype_combobox.cpp \
+    $$PWD/penstyle_toolbar.cpp \
     $$PWD/vmaingraphicsscene.cpp \
     $$PWD/vmaingraphicsview.cpp \
     $$PWD/vwidgetpopup.cpp \
@@ -29,6 +31,8 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/color_combobox.h \
+    $$PWD/linetype_combobox.h \
+    $$PWD/penstyle_toolbar.h \
     $$PWD/stable.h \
     $$PWD/vmaingraphicsscene.h \
     $$PWD/vmaingraphicsview.h \

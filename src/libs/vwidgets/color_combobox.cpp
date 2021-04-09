@@ -1,26 +1,43 @@
 /******************************************************************************
- *   @file   color_combobox.cpp                                               *
+ *   @file   color_combobox.cpp
+ **  @author DS Caskey
+ **  @date   April 6, 2021
+ **
+ **  @brief
+ **  @copyright
+ **
+ **  Seamly2D is free software: you can redistribute it and/or modify
+ **  it under the terms of the GNU General Public License as published by
+ **  the Free Software Foundation, either version 3 of the License, or
+ **  (at your option) any later version.
+ **
+ **  Seamly2D is distributed in the hope that it will be useful,
+ **  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ **  GNU General Public License for more details.
+ **
+ **  You should have received a copy of the GNU General Public License
+ **  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
+ **
  *****************************************************************************/
+
+#include "color_combobox.h"
+
+#include "../ifc/ifcdef.h"
+#include "../vtools/tools/vabstracttool.h"
+
 #include <QColor>
 #include <QPixmap>
 #include <QMap>
 #include <QAbstractItemView>
 #include <QComboBox>
 
-#include "../vtools/tools/vabstracttool.h"
-#include "../vmisc/logging.h"
-#include "../ifc/ifcdef.h"
-
-#include "color_combobox.h"
-
-Q_LOGGING_CATEGORY(colorComboBox, "color_combobox")
-
 /*
  * Default Constructor.
  */
 ColorComboBox::ColorComboBox(QWidget *parent, const char *name)
     : QComboBox(parent)
-    , m_currentColor("black")
+    , m_currentColor(ColorBlack)
     , m_iconWidth(40)
     , m_iconHeight(14)
 {
@@ -34,11 +51,10 @@ ColorComboBox::ColorComboBox(QWidget *parent, const char *name)
  */
 ColorComboBox::ColorComboBox(int width, int height, QWidget *parent, const char *name)
     : QComboBox(parent)
-    , m_currentColor("black")
+    , m_currentColor(ColorBlack)
     , m_iconWidth(width)
     , m_iconHeight(height)
 {
-    qCDebug(colorComboBox, "ColorComboBox Constructor 2 used");
     setObjectName(name);
     setEditable (false);
     init();
@@ -54,7 +70,6 @@ ColorComboBox::~ColorComboBox(){}
  */
 void ColorComboBox::init()
 {
-    qCDebug(colorComboBox, "ColorComboBox::init");
     this->blockSignals(true);
 
 #if defined(Q_OS_MAC)
@@ -77,10 +92,10 @@ void ColorComboBox::init()
     }
 
     this->blockSignals(false);
-    connect(this, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ColorComboBox::colorChanged);
+    connect(this, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ColorComboBox::updateColor);
 
     setCurrentIndex(0);
-    colorChanged(currentIndex());
+    updateColor(currentIndex());
 }
 
 /*
@@ -88,14 +103,13 @@ void ColorComboBox::init()
  */
 void ColorComboBox::setColor(const QString &color)
 {
-    qCDebug(colorComboBox, "ColorComboBox::setColor");
     m_currentColor = color;
 
     setCurrentIndex(findData(color));
 
     if (currentIndex()!= count() -1 )
     {
-        colorChanged(currentIndex());
+        updateColor(currentIndex());
     }
 }
 
@@ -103,17 +117,15 @@ void ColorComboBox::setColor(const QString &color)
  * Called when the color has changed. This method sets the current color to the
  * value chosen.
  */
-void ColorComboBox::colorChanged(int index)
+void ColorComboBox::updateColor(int index)
 {
-    qCDebug(colorComboBox, "ColorComboBox::colorChanged");
-
     QVariant color = itemData(index);
     if(color != QVariant::Invalid )
     {
        m_currentColor = QVariant(color).toString();
     }
 
-    emit colorChangedSignal(m_currentColor);
+    emit colorChanged(m_currentColor);
 }
 
 QString ColorComboBox::getColor() const

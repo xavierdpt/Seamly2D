@@ -1,5 +1,5 @@
 /******************************************************************************
- *   color_combobox.h
+ *   linetype_combobox.h
  **  @author DS Caskey
  **  @date   April 6, 2021
  **
@@ -21,43 +21,46 @@
  **
  *****************************************************************************/
 
-#ifndef COLOR_COMBOBOX_H
-#define COLOR_COMBOBOX_H
+#ifndef LINETYPE_COMBOBOX_H
+#define LINETYPE_COMBOBOX_H
 
 #include <QComboBox>
-#include <QString>
 #include <QWidget>
+#include <QPen>
+#include <QIcon>
 #include <memory>
 
+class QIcon;
+
 /**
- * A comboBox for choosing a color.
+ * A comboBox for choosing a line type.
  */
-class ColorComboBox: public QComboBox
+class LineTypeComboBox: public QComboBox
 {
     Q_OBJECT
 
 public:
-             ColorComboBox(QWidget *parent = nullptr , const char *name = nullptr );
-             ColorComboBox(int width, int height, QWidget *parent = nullptr , const char *name = nullptr );
-    virtual ~ColorComboBox();
+                   LineTypeComboBox(QWidget *parent = nullptr);
+                   LineTypeComboBox(int  width, int height, QWidget *parent = nullptr , const char *name = nullptr );
 
-    QString  getColor() const;
-    void     setColor(const QString &color);
-    void     init();
-    int      getIconWidth();
-    int      getIconHeight();
+    virtual       ~LineTypeComboBox();
+
+    QString        getLineType() { return m_currentLineType; }
+    void           setLineType(const QString &type);
+
+    void           init();
 
 private slots:
-    void     updateColor(int index);
+    void           updateLineType(int index);
 
 signals:
-    void     colorChanged(const QString &color);
+    void           lineTypeChanged(const QString &type);
 
 private:
-    QString  m_currentColor;
-    int      m_colorIndexStart;
-    int      m_iconWidth;
-    int      m_iconHeight;
+    QIcon          createIcon(const QString &type);
+    QString        m_currentLineType;
+    int            m_iconWidth;
+    int            m_iconHeight;
 };
 
 #endif

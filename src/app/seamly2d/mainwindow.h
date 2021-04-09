@@ -53,8 +53,10 @@
 #define MAINWINDOW_H
 
 #include "mainwindowsnogui.h"
+
 #include "core/vcmdexport.h"
 #include "../vmisc/vlockguard.h"
+#include "../vwidgets/penstyle_toolbar.h"
 
 #include <QPointer>
 
@@ -74,6 +76,7 @@ class VWidgetGroups;
 class VWidgetDetails;
 class QToolButton;
 class QDoubleSpinBox;
+class PenStyleToolBar;
 
 /**
  * @brief The MainWindow class main windows.
@@ -313,12 +316,14 @@ private:
 
     QList<QToolButton*>               toolButtonPointerList;
     QDoubleSpinBox                   *zoomScaleSpinBox;
+    PenStyleToolBar                  *m_penStyleToolBar;
 
     void                              SetDefaultHeight();
     void                              SetDefaultSize();
 
     void                              initStatusToolBar();
     void                              initModesToolBar();
+    void                              initPenStyleToolBar();
     void                              initDraftToolBar();
     void                              initToolsToolBar();
     void                              InitToolButtons();
@@ -376,7 +381,7 @@ private:
 
     bool               MaybeSave();
     void               UpdateRecentFileActions();
-    void               CreateMenus();
+    void               createMenus();
     void               CreateActions();
     void               InitAutoSave();
     QString            PatternPieceName(const QString &text);
@@ -391,7 +396,7 @@ private:
     void               UpdateHeightsList(const QStringList &list);
     void               UpdateSizesList(const QStringList &list);
 
-    void               AddDocks();
+    void               addDocks();
     void               InitDocksContain();
     bool               OpenNewSeamly2D(const QString &fileName = QString())const;
     void               FileClosedCorrect();

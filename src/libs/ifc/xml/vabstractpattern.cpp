@@ -51,6 +51,21 @@
 
 #include "vabstractpattern.h"
 
+#include "../exception/vexceptionemptyparameter.h"
+#include "../exception/vexceptionobjecterror.h"
+#include "../exception/vexceptionconversionerror.h"
+#include "../ifc/exception/vexceptionbadid.h"
+#include "../ifc/ifcdef.h"
+#include "../vmisc/vabstractapplication.h"
+#include "../vpatterndb/vcontainer.h"
+#include "../vpatterndb/vpiecenode.h"
+#include "../qmuparser/qmutokenparser.h"
+#include "../vtools/tools/vdatatool.h"
+#include "vpatternconverter.h"
+#include "vdomdocument.h"
+#include "vtoolrecord.h"
+
+
 #include <QDomNode>
 #include <QDomNodeList>
 #include <QLatin1String>
@@ -61,20 +76,6 @@
 #include <QStringData>
 #include <QStringDataPtr>
 #include <QtDebug>
-
-#include "../exception/vexceptionemptyparameter.h"
-#include "../exception/vexceptionobjecterror.h"
-#include "../exception/vexceptionconversionerror.h"
-#include "../qmuparser/qmutokenparser.h"
-#include "../ifc/exception/vexceptionbadid.h"
-#include "../ifc/ifcdef.h"
-#include "../vpatterndb/vcontainer.h"
-#include "../vpatterndb/vpiecenode.h"
-#include "../vtools/tools/vdatatool.h"
-#include "vpatternconverter.h"
-#include "vdomdocument.h"
-#include "vtoolrecord.h"
-#include "../vmisc/vabstractapplication.h"
 
 class QDomElement;
 
@@ -249,14 +250,17 @@ void ReadExpressionAttribute(QVector<VFormulaField> &expressions, const QDomElem
 
 //---------------------------------------------------------------------------------------------------------------------
 VAbstractPattern::VAbstractPattern(QObject *parent)
-    : QObject(parent),
-      VDomDocument(),
-      nameActivPP(QString()),
-      cursor(0),
-      toolsOnRemove(QVector<VDataTool*>()),
-      history(QVector<VToolRecord>()),
-      patternPieces(QStringList()),
-      modified(false)
+    : QObject(parent)
+    , VDomDocument()
+    , nameActivPP(QString())
+    , m_defaultLineColor(qApp->Settings()->getDefaultLineColor())
+    , m_defaultLineType(qApp->Settings()->getDefaultLineType())
+    //, m_defaultLineWeight(qApp->Settings()->getDefaultLineWeight())
+    , cursor(0)
+    , toolsOnRemove(QVector<VDataTool*>())
+    , history(QVector<VToolRecord>())
+    , patternPieces(QStringList())
+    , modified(false)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -602,6 +606,59 @@ void VAbstractPattern::setCursor(const quint32 &value)
         emit ChangedCursor(cursor);
     }
 }
+
+/**
+//---------------------------------------------------------------------------------------------------------------------
+QString VAbstractPattern::getDefaultGroup() const
+{
+    return m_defaultGroup;
+}
+**/
+//---------------------------------------------------------------------------------------------------------------------
+/**void VAbstractPattern::setDefaultGroup(PenStyleToolBar *bar)
+{
+    qDebug() << "m_penToolBar = " << bar;
+    m_defaultGroup = bar->getCurrentGroup();
+}
+**/
+
+//---------------------------------------------------------------------------------------------------------------------
+QString VAbstractPattern::getDefaultLineColor() const
+{
+    return m_defaultLineColor;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void VAbstractPattern::setDefaultLineColor(const QString &color)
+{
+    m_defaultLineColor = color;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+QString VAbstractPattern::getDefaultLineType() const
+{
+  return m_defaultLineType;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void VAbstractPattern::setDefaultLineType(const QString &type)
+{
+    m_defaultLineType = type;
+}
+
+/**
+//---------------------------------------------------------------------------------------------------------------------
+QString VAbstractPattern::getDefaultLineWeight() const
+{
+    return m_defaultLineWeight;
+}
+**/
+//---------------------------------------------------------------------------------------------------------------------
+/**void VAbstractPattern::setDefaultLineWeight(const QString &weight)
+{
+    m_defaultLineWeight = weight;
+}
+**/
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

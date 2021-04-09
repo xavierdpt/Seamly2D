@@ -52,6 +52,8 @@
 #ifndef VCOMMONSETTINGS_H
 #define VCOMMONSETTINGS_H
 
+#include "../vlayout/vbank.h"
+
 #include <QByteArray>
 #include <QMetaObject>
 #include <QObject>
@@ -60,8 +62,6 @@
 #include <QString>
 #include <QStringList>
 #include <QtGlobal>
-
-#include "../vlayout/vbank.h"
 
 class VCommonSettings : public QSettings
 {
@@ -153,6 +153,15 @@ public:
 
     QString              getZoomRBNegativeColor() const;
     void                 setZoomRBNegativeColor(const QString &value);
+
+    QString              getDefaultLineColor() const;
+    void                 setDefaultLineColor(const QString &value);
+
+    QString              getDefaultLineType() const;
+    void                 setDefaultLineType(const QString &value);
+
+    QString              getDefaultLineWeight() const;
+    void                 setDefaultLineWeight(const QString &value);
 
     qreal                getConstrainValue() const;
     void                 setConstrainValue(const qreal &value);

@@ -90,5 +90,6 @@
         <file>icon/32x32/list-edit_32.png</file>
         <file>icon/32x32/filter.png</file>
         <file>icon/32x32/clear.png</file>
+        <file>icon/16x16/reset.png</file>
     </qresource>
 </RCC>

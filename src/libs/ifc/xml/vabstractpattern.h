@@ -53,6 +53,10 @@
 #define VABSTRACTPATTERN_H
 
 #include <qcompilerdetection.h>
+#include "../vmisc/def.h"
+#include "vdomdocument.h"
+#include "vtoolrecord.h"
+
 #include <QHash>
 #include <QMap>
 #include <QMetaObject>
@@ -62,10 +66,6 @@
 #include <QStringList>
 #include <QVector>
 #include <QtGlobal>
-
-#include "../vmisc/def.h"
-#include "vdomdocument.h"
-#include "vtoolrecord.h"
 
 class QDomElement;
 class VPiecePath;
@@ -102,7 +102,7 @@ public:
     explicit VAbstractPattern(QObject *parent = nullptr);
     virtual ~VAbstractPattern() Q_DECL_EQ_DEFAULT;
 
-    QStringList    ListMeasurements() const;
+    QStringList            ListMeasurements() const;
     QVector<VFormulaField> ListExpressions() const;
     QVector<VFormulaField> ListIncrementExpressions() const;
 
@@ -121,6 +121,18 @@ public:
     quint32        getCursor() const;
     void           setCursor(const quint32 &value);
 
+    //void           setDefaultGroup(PenStyleToolBar *bar);
+    //QString        getDefaultGroup() const;
+
+    void           setDefaultLineColor(const QString &color);
+    QString        getDefaultLineColor() const;
+
+    //void           setDefaultLineWeight(PenStyleToolBar *bar);
+    //QString        getDefaultLineWeight() const;
+
+    void           setDefaultLineType(const QString &type);
+    QString        getDefaultLineType() const;
+
     virtual void   IncrementReferens(quint32 id) const=0;
     virtual void   DecrementReferens(quint32 id) const=0;
 
@@ -138,53 +150,53 @@ public:
     static QVector<quint32>        ParsePieceInternalPaths(const QDomElement &domElement);
     static QVector<quint32>        ParsePiecePins(const QDomElement &domElement);
 
-    void           AddToolOnRemove(VDataTool *tool);
+    void                  AddToolOnRemove(VDataTool *tool);
 
     QVector<VToolRecord> *getHistory();
-    QVector<VToolRecord> getLocalHistory() const;
+    QVector<VToolRecord>  getLocalHistory() const;
 
-    QString        MPath() const;
-    void           SetMPath(const QString &path);
+    QString               MPath() const;
+    void                  SetMPath(const QString &path);
 
-    quint32        SiblingNodeId(const quint32 &nodeId) const;
+    quint32               SiblingNodeId(const quint32 &nodeId) const;
 
-    QStringList    getPatternPieces() const;
+    QStringList           getPatternPieces() const;
 
-    QMap<GHeights, bool> GetGradationHeights() const;
-    void                 SetGradationHeights(const QMap<GHeights, bool> &options);
+    QMap<GHeights, bool>  GetGradationHeights() const;
+    void                  SetGradationHeights(const QMap<GHeights, bool> &options);
 
-    QMap<GSizes, bool>   GetGradationSizes() const;
-    void                 SetGradationSizes(const QMap<GSizes, bool> &options);
+    QMap<GSizes, bool>    GetGradationSizes() const;
+    void                  SetGradationSizes(const QMap<GSizes, bool> &options);
 
-    QString        GetDescription() const;
-    void           SetDescription(const QString &text);
+    QString               GetDescription() const;
+    void                  SetDescription(const QString &text);
 
-    QString        GetNotes() const;
-    void           SetNotes(const QString &text);
+    QString               GetNotes() const;
+    void                  SetNotes(const QString &text);
 
-    QString        GetPatternName() const;
-    void           SetPatternName(const QString& qsName);
+    QString               GetPatternName() const;
+    void                  SetPatternName(const QString& qsName);
 
-    QString        GetCompanyName() const;
-    void           SetCompanyName(const QString& qsName);
+    QString               GetCompanyName() const;
+    void                  SetCompanyName(const QString& qsName);
 
-    QString        GetPatternNumber() const;
-    void           SetPatternNumber(const QString &qsNum);
+    QString               GetPatternNumber() const;
+    void                  SetPatternNumber(const QString &qsNum);
 
-    QString        GetCustomerName() const;
-    void           SetCustomerName(const QString& qsName);
+    QString               GetCustomerName() const;
+    void                  SetCustomerName(const QString& qsName);
 
-    QString        GetLabelDateFormat() const;
-    void           SetLabelDateFormat(const QString &format);
+    QString               GetLabelDateFormat() const;
+    void                  SetLabelDateFormat(const QString &format);
 
-    QString        GetLabelTimeFormat() const;
-    void           SetLabelTimeFormat(const QString &format);
+    QString               GetLabelTimeFormat() const;
+    void                  SetLabelTimeFormat(const QString &format);
 
     void                        SetPatternLabelTemplate(const QVector<VLabelTemplateLine> &lines);
     QVector<VLabelTemplateLine> GetPatternLabelTemplate() const;
 
-    void SetPatternWasChanged(bool changed);
-    bool GetPatternWasChanged() const;
+    void           SetPatternWasChanged(bool changed);
+    bool           GetPatternWasChanged() const;
 
     QString        GetImage() const;
     QString        GetImageExtension() const;
@@ -204,7 +216,7 @@ public:
     QDomElement    CreateGroup(quint32 id, const QString &name, const QMap<quint32, quint32> &groupData);
     QString        GetGroupName(quint32 id);
     void           SetGroupName(quint32 id, const QString &name);
-    QMap<quint32, QPair<QString, bool> > GetGroups();
+    QMap<quint32, QPair<QString, bool>> GetGroups();
     bool           GetGroupVisivility(quint32 id);
     void           SetGroupVisivility(quint32 id, bool visible);
 
@@ -403,21 +415,25 @@ public slots:
 
 protected:
     /** @brief nameActivDraw name current pattern peace. */
-    QString        nameActivPP;
+    QString              nameActivPP;
+
+    QString              m_defaultLineColor;
+    QString              m_defaultLineType;
+    //QString              m_defaultLineWeight;
 
     /** @brief cursor cursor keep id tool after which we will add new tool in file. */
-    quint32        cursor;
+    quint32              cursor;
 
-    QVector<VDataTool*> toolsOnRemove;
+    QVector<VDataTool*>  toolsOnRemove;
 
     /** @brief history history records. */
     QVector<VToolRecord> history;
 
     /** @brief patternPieces list of patern pieces names for combobox*/
-    QStringList    patternPieces;
+    QStringList          patternPieces;
 
     /** @brief modified keep state of the document for cases that do not cover QUndoStack*/
-    mutable bool   modified;
+    mutable bool         modified;
 
     /** @brief tools list with pointer on tools. */
     static QHash<quint32, VDataTool*> tools;
@@ -425,23 +441,24 @@ protected:
     static QVector<VLabelTemplateLine> patternLabelLines;
     static bool patternLabelWasChanged;
 
-    static void       ToolExists(const quint32 &id);
-    static VPiecePath ParsePathNodes(const QDomElement &domElement);
-    static VPieceNode ParseSANode(const QDomElement &domElement);
+    static void          ToolExists(const quint32 &id);
+    static VPiecePath    ParsePathNodes(const QDomElement &domElement);
+    static VPieceNode    ParseSANode(const QDomElement &domElement);
 
-    void           SetActivPP(const QString& name);
+    void                 SetActivPP(const QString& name);
 
-    QDomElement    CheckTagExists(const QString &tag);
-    void           InsertTag(const QStringList &tags, const QDomElement &element);
+    QDomElement          CheckTagExists(const QString &tag);
+    void                 InsertTag(const QStringList &tags, const QDomElement &element);
 
-    void           SetChildTag(const QString& qsParent, const QString& qsChild, const QString& qsValue);
+    void                 SetChildTag(const QString& qsParent, const QString& qsChild, const QString& qsValue);
 
-    int  GetIndexActivPP() const;
-    bool GetActivDrawElement(QDomElement &element) const;
+    int                  GetIndexActivPP() const;
+    bool                 GetActivDrawElement(QDomElement &element) const;
+
 private:
     Q_DISABLE_COPY(VAbstractPattern)
 
-    QStringList ListIncrements() const;
+    QStringList            ListIncrements() const;
     QVector<VFormulaField> ListPointExpressions() const;
     QVector<VFormulaField> ListArcExpressions() const;
     QVector<VFormulaField> ListElArcExpressions() const;
@@ -453,9 +470,9 @@ private:
     QVector<VFormulaField> ListGrainlineExpressions(const QDomElement &element) const;
     QVector<VFormulaField> ListPieceExpressions() const;
 
-    bool IsVariable(const QString& token) const;
-    bool IsPostfixOperator(const QString& token) const;
-    bool IsFunction(const QString& token) const;
+    bool                   IsVariable(const QString& token) const;
+    bool                   IsPostfixOperator(const QString& token) const;
+    bool                   IsFunction(const QString& token) const;
 
     QPair<bool, QMap<quint32, quint32> > ParseItemElement(const QDomElement &domElement);
 
