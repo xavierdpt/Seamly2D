@@ -12,8 +12,7 @@ name: Build weekly release
 #'* * * * *'
 on:
   schedule:
-    #- cron: '0 0 * * MON'
-    -cron: '3 0 * * 5'
+    - cron: '0 0 * * MON'
 
 env:
   QT_SELECT: 5
