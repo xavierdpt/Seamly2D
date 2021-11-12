@@ -193,6 +193,7 @@ private:
 
     void ShowOptionsToolSinglePoint(QGraphicsItem *item);
     void ShowOptionsToolEndLine(QGraphicsItem *item);
+    void ShowOptionsToolEuler(QGraphicsItem *item);
     void ShowOptionsToolAlongLine(QGraphicsItem *item);
     void ShowOptionsToolArc(QGraphicsItem *item);
     void ShowOptionsToolArcWithLength(QGraphicsItem *item);

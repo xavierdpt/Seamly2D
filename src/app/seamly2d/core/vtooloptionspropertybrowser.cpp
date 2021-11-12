@@ -99,7 +99,7 @@ void VToolOptionsPropertyBrowser::ClearPropertyBrowser()
 void VToolOptionsPropertyBrowser::ShowItemOptions(QGraphicsItem *item)
 {
     // This check helps to find missed tools in the switch
-    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 53, "Not all tools were used in switch.");
+    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were used in switch.");
 
     switch (item->type())
     {
@@ -108,6 +108,9 @@ void VToolOptionsPropertyBrowser::ShowItemOptions(QGraphicsItem *item)
             break;
         case VToolEndLine::Type:
             ShowOptionsToolEndLine(item);
+            break;
+        case VToolEuler::Type:
+            ShowOptionsToolEuler(item);
             break;
         case VToolAlongLine::Type:
             ShowOptionsToolAlongLine(item);
@@ -226,7 +229,7 @@ void VToolOptionsPropertyBrowser::UpdateOptions()
     }
 
     // This check helps to find missed tools in the switch
-    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 53, "Not all tools were used in switch.");
+    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were used in switch.");
 
     switch (currentItem->type())
     {
@@ -371,7 +374,7 @@ void VToolOptionsPropertyBrowser::userChangedData(VPE::VProperty *property)
     }
 
     // This check helps to find missed tools in the switch
-    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 53, "Not all tools were used in switch.");
+    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were used in switch.");
 
     switch (currentItem->type())
     {
@@ -1941,6 +1944,20 @@ void VToolOptionsPropertyBrowser::ShowOptionsToolEndLine(QGraphicsItem *item)
     VToolEndLine *i = qgraphicsitem_cast<VToolEndLine *>(item);
     i->ShowVisualization(true);
     formView->setTitle(tr("Point at distance and angle"));
+
+    AddPropertyObjectName(i, tr("Point label:"));
+    AddPropertyParentPointName(i->BasePointName(), tr("Base point:"), AttrBasePoint);
+    AddPropertyLineType(i, tr("Line type:"), LineStylesPics());
+    AddPropertyLineColor(i, tr("Line color:"), VAbstractTool::ColorsList(), AttrLineColor);
+    AddPropertyFormula(tr("Length:"), i->GetFormulaLength(), AttrLength);
+    AddPropertyFormula(tr("Angle:"), i->GetFormulaAngle(), AttrAngle);
+}
+
+void VToolOptionsPropertyBrowser::ShowOptionsToolEuler(QGraphicsItem *item)
+{
+    VToolEuler *i = qgraphicsitem_cast<VToolEuler *>(item);
+    i->ShowVisualization(true);
+    formView->setTitle(tr("Euler"));
 
     AddPropertyObjectName(i, tr("Point label:"));
     AddPropertyParentPointName(i->BasePointName(), tr("Base point:"), AttrBasePoint);

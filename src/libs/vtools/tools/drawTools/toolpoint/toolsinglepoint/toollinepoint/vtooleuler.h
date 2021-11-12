@@ -23,7 +23,7 @@
 
  ************************************************************************
  **
- **  @file   drawtools.h
+ **  @file   vtooleuler.h
  **  @author Roman Telezhynskyi <dismine(at)gmail.com>
  **  @date   November 15, 2013
  **
@@ -49,43 +49,63 @@
  **
  *************************************************************************/
 
-#ifndef DRAWTOOLS_H
-#define DRAWTOOLS_H
+#ifndef VTOOLEULER_H
+#define VTOOLEULER_H
 
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolalongline.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolbisector.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolendline.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtooleuler.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolnormal.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolshoulderpoint.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolheight.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoollineintersectaxis.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolcurveintersectaxis.h"
-#include "toolcurve/vtoolarc.h"
-#include "toolcurve/vtoolellipticalarc.h"
-#include "toolcurve/vtoolarcwithlength.h"
-#include "toolcurve/vtoolspline.h"
-#include "toolcurve/vtoolcubicbezier.h"
-#include "toolcurve/vtoolsplinepath.h"
-#include "toolcurve/vtoolcubicbezierpath.h"
-#include "vtoolline.h"
-#include "toolpoint/toolsinglepoint/toolcut/vtoolcutspline.h"
-#include "toolpoint/toolsinglepoint/toolcut/vtoolcutsplinepath.h"
-#include "toolpoint/toolsinglepoint/toolcut/vtoolcutarc.h"
-#include "toolpoint/toolsinglepoint/vtoollineintersect.h"
-#include "toolpoint/toolsinglepoint/vtoolpointofcontact.h"
-#include "toolpoint/toolsinglepoint/vtoolbasepoint.h"
-#include "toolpoint/toolsinglepoint/vtooltriangle.h"
-#include "toolpoint/toolsinglepoint/vtoolpointofintersection.h"
-#include "toolpoint/toolsinglepoint/vtoolpointofintersectionarcs.h"
-#include "toolpoint/toolsinglepoint/vtoolpointofintersectioncircles.h"
-#include "toolpoint/toolsinglepoint/vtoolpointofintersectioncurves.h"
-#include "toolpoint/toolsinglepoint/vtoolpointfromcircleandtangent.h"
-#include "toolpoint/toolsinglepoint/vtoolpointfromarcandtangent.h"
-#include "toolpoint/tooldoublepoint/vtooltruedarts.h"
-#include "operation/vtoolrotation.h"
-#include "operation/flipping/vtoolflippingbyline.h"
-#include "operation/flipping/vtoolflippingbyaxis.h"
-#include "operation/vtoolmove.h"
+#include <qcompilerdetection.h>
+#include <QDomElement>
+#include <QGraphicsItem>
+#include <QMetaObject>
+#include <QObject>
+#include <QString>
+#include <QtGlobal>
 
-#endif // DRAWTOOLS_H
+#include "../ifc/xml/vabstractpattern.h"
+#include "../vpatterndb/vformula.h"
+#include "../vmisc/def.h"
+#include "vtoollinepoint.h"
+
+template <class T> class QSharedPointer;
+
+/**
+ * @brief The VToolEuler class tool for creation point on the line end.
+ */
+class VToolEuler : public VToolLinePoint
+{
+    Q_OBJECT
+public:
+    virtual ~VToolEuler() Q_DECL_EQ_DEFAULT;
+    virtual void setDialog() Q_DECL_OVERRIDE;
+    static VToolEuler *Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene  *scene, VAbstractPattern *doc,
+                                VContainer *data);
+    static VToolEuler *Create(const quint32 _id, const QString &pointName, const QString &typeLine,
+                                const QString &lineColor, QString &formulaLength, QString &formulaAngle,
+                                const quint32 &basePointId, const qreal &mx, const qreal &my,
+                                VMainGraphicsScene  *scene, VAbstractPattern *doc, VContainer *data,
+                                const Document &parse,
+                                const Source &typeCreation);
+    static const QString ToolType;
+    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
+    enum { Type = UserType + static_cast<int>(Tool::Euler)};
+
+    VFormula     GetFormulaAngle() const;
+    void         SetFormulaAngle(const VFormula &value);
+    virtual void ShowVisualization(bool show) Q_DECL_OVERRIDE;
+protected:
+    virtual void contextMenuEvent ( QGraphicsSceneContextMenuEvent * event ) Q_DECL_OVERRIDE;
+    virtual void SaveDialog(QDomElement &domElement) Q_DECL_OVERRIDE;
+    virtual void SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj) Q_DECL_OVERRIDE;
+    virtual void ReadToolAttributes(const QDomElement &domElement) Q_DECL_OVERRIDE;
+    virtual void SetVisualization() Q_DECL_OVERRIDE;
+private:
+    Q_DISABLE_COPY(VToolEuler)
+
+    QString formulaAngle;
+
+    VToolEuler(VAbstractPattern *doc, VContainer *data, const quint32 &id, const QString &typeLine,
+                 const QString &lineColor,
+                 const QString &formulaLength, const QString &formulaAngle, const quint32 &basePointId,
+                 const Source &typeCreation, QGraphicsItem * parent = nullptr);
+};
+
+#endif // VTOOLEULER_H

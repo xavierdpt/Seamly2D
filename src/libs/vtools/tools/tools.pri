@@ -19,6 +19,7 @@ HEADERS += \
     $$PWD/drawTools/vtoolline.h \
     $$PWD/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtoolheight.h \
     $$PWD/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtoolendline.h \
+    $$PWD/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtooleuler.h \
     $$PWD/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtoolbisector.h \
     $$PWD/drawTools/toolcurve/vtoolarc.h \
     $$PWD/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtoolalongline.h \
@@ -79,6 +80,7 @@ SOURCES += \
     $$PWD/drawTools/vtoolline.cpp \
     $$PWD/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtoolheight.cpp \
     $$PWD/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtoolendline.cpp \
+    $$PWD/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtooleuler.cpp \
     $$PWD/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtoolbisector.cpp \
     $$PWD/drawTools/toolcurve/vtoolarc.cpp \
     $$PWD/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtoolalongline.cpp \

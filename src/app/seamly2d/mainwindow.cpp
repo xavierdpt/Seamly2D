@@ -796,6 +796,19 @@ void MainWindow::ToolEndLine(bool checked)
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
+ * @brief ToolEuler handler tool Euler.
+ * @param checked true - button checked.
+ */
+void MainWindow::ToolEuler(bool checked)
+{
+    ToolSelectPointByRelease();
+    SetToolButtonWithApply<DialogEuler>(checked, Tool::Euler, ":/cursor/euler_cursor.png", tr("Select point"),
+                                          &MainWindow::ClosedDrawDialogWithApply<VToolEuler>,
+                                          &MainWindow::ApplyDrawDialog<VToolEuler>);
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+/**
  * @brief ToolLine handler tool line.
  * @param checked true - button checked.
  */
@@ -1953,9 +1966,10 @@ void MainWindow::InitToolButtons()
     }
 
     // This check helps to find missed tools
-    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 53, "Check if all tools were connected.");
+    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Check if all tools were connected.");
 
     connect(ui->toolButtonEndLine, &QToolButton::clicked, this, &MainWindow::ToolEndLine);
+    connect(ui->toolButtonEuler, &QToolButton::clicked, this, &MainWindow::ToolEuler);
     connect(ui->toolButtonLine, &QToolButton::clicked, this, &MainWindow::ToolLine);
     connect(ui->toolButtonAlongLine, &QToolButton::clicked, this, &MainWindow::ToolAlongLine);
     connect(ui->toolButtonShoulderPoint, &QToolButton::clicked, this, &MainWindow::ToolShoulderPoint);
@@ -2029,7 +2043,7 @@ QT_WARNING_DISABLE_GCC("-Wswitch-default")
 void MainWindow::CancelTool()
 {
     // This check helps to find missed tools in the switch
-    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 53, "Not all tools were handled.");
+    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were handled.");
 
     qCDebug(vMainWindow, "Canceling tool.");
     dialogTool.clear();
@@ -2070,6 +2084,9 @@ void MainWindow::CancelTool()
             break;
         case Tool::EndLine:
             ui->toolButtonEndLine->setChecked(false);
+            break;
+        case Tool::Euler:
+            ui->toolButtonEuler->setChecked(false);
             break;
         case Tool::Line:
             ui->toolButtonLine->setChecked(false);
@@ -3329,10 +3346,11 @@ void MainWindow::SetEnableTool(bool enable)
     }
 
     // This check helps to find missed tools
-    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 53, "Not all tools were handled.");
+    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were handled.");
 
     //Drawing Tools
     ui->toolButtonEndLine->setEnabled(drawTools);
+    ui->toolButtonEuler->setEnabled(drawTools);
     ui->toolButtonLine->setEnabled(drawTools);
     ui->toolButtonAlongLine->setEnabled(drawTools);
     ui->toolButtonShoulderPoint->setEnabled(drawTools);
@@ -3656,7 +3674,7 @@ QT_WARNING_DISABLE_GCC("-Wswitch-default")
 void MainWindow::LastUsedTool()
 {
     // This check helps to find missed tools in the switch
-    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 53, "Not all tools were handled.");
+    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were handled.");
 
     if (currentTool == lastUsedTool)
     {
@@ -3690,6 +3708,10 @@ void MainWindow::LastUsedTool()
         case Tool::EndLine:
             ui->toolButtonEndLine->setChecked(true);
             ToolEndLine(true);
+            break;
+        case Tool::Euler:
+            ui->toolButtonEuler->setChecked(true);
+            ToolEuler(true);
             break;
         case Tool::Line:
             ui->toolButtonLine->setChecked(true);

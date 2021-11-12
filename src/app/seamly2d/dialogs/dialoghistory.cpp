@@ -238,7 +238,7 @@ QT_WARNING_DISABLE_GCC("-Wswitch-default")
 QString DialogHistory::Record(const VToolRecord &tool)
 {
     // This check helps to find missed tools in the switch
-    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 53, "Not all tools were used in history.");
+    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were used in history.");
 
     const QDomElement domElem = doc->elementById(tool.getId());
     if (domElem.isElement() == false)
@@ -265,6 +265,10 @@ QString DialogHistory::Record(const VToolRecord &tool)
                 return tr("%1 - Base point").arg(PointName(tool.getId()));
             case Tool::EndLine:
                 return tr("%1_%2 - Line from point %1 to point %2")
+                        .arg(PointName(AttrUInt(domElem, AttrBasePoint)))
+                        .arg(PointName(tool.getId()));
+            case Tool::Euler:
+                return tr("%1_%2 - Euler Line from point %1 to point %2")
                         .arg(PointName(AttrUInt(domElem, AttrBasePoint)))
                         .arg(PointName(tool.getId()));
             case Tool::Line:

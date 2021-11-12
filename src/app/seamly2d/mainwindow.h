@@ -145,6 +145,7 @@ private slots:
 
     void ArrowTool();
     void ToolEndLine(bool checked);
+    void ToolEuler(bool checked);
     void ToolLine(bool checked);
     void ToolAlongLine(bool checked);
     void ToolMidpoint(bool checked);

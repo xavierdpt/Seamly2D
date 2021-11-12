@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+mkdir -p build
+cd build
+# source /opt/qt59/bin/qt59-env.sh
+qmake ../Seamly2D.pro -r CONFIG+=noDebugSymbols CONFIG+=no_ccache
+

@@ -6,6 +6,7 @@ HEADERS += \
     $$PWD/line/visline.h \
     $$PWD/line/vistoolline.h \
     $$PWD/line/vistoolendline.h \
+    $$PWD/line/vistooleuler.h \
     $$PWD/line/vistoolalongline.h \
     $$PWD/line/vistoolbisector.h \
     $$PWD/line/vistoolshoulderpoint.h \
@@ -49,6 +50,7 @@ SOURCES += \
     $$PWD/line/visline.cpp \
     $$PWD/line/vistoolline.cpp \
     $$PWD/line/vistoolendline.cpp \
+    $$PWD/line/vistooleuler.cpp \
     $$PWD/line/vistoolalongline.cpp \
     $$PWD/line/vistoolbisector.cpp \
     $$PWD/line/vistoolshoulderpoint.cpp \

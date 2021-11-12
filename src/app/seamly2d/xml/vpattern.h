@@ -183,6 +183,7 @@ private:
 
     void ParseToolBasePoint(VMainGraphicsScene *scene, const QDomElement &domElement, const Document &parse);
     void ParseToolEndLine(VMainGraphicsScene *scene, QDomElement &domElement, const Document &parse);
+    void ParseToolEuler(VMainGraphicsScene *scene, QDomElement &domElement, const Document &parse);
     void ParseToolAlongLine(VMainGraphicsScene *scene, QDomElement &domElement, const Document &parse);
     void ParseToolShoulderPoint(VMainGraphicsScene *scene, QDomElement &domElement, const Document &parse);
     void ParseToolNormal(VMainGraphicsScene *scene, QDomElement &domElement, const Document &parse);

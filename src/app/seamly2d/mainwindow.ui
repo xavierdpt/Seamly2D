@@ -368,6 +368,32 @@
           </property>
          </widget>
         </item>
+        <item row="10" column="1">
+         <widget class="QToolButton" name="toolButtonEuler">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>Point at distance and angle</string>
+          </property>
+          <property name="text">
+           <string notr="true">...</string>
+          </property>
+          <property name="icon">
+           <iconset resource="share/resources/toolicon.qrc">
+            <normaloff>:/toolicon/32x32/euler.png</normaloff>:/toolicon/32x32/euler.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
         <item row="10" column="0">
          <widget class="QToolButton" name="toolButtonMidpoint">
           <property name="enabled">

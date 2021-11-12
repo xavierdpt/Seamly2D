@@ -1053,7 +1053,8 @@ void VPattern::ParsePointElement(VMainGraphicsScene *scene, QDomElement &domElem
                                        << VToolPointFromArcAndTangent::ToolType     /*20*/
                                        << VToolTrueDarts::ToolType                  /*21*/
                                        << VToolPointOfIntersectionCurves::ToolType  /*22*/
-                                       << VToolPin::ToolType;                       /*23*/
+                                       << VToolPin::ToolType                        /*23*/
+                                       << VToolEuler::ToolType;                     /*24*/
     switch (points.indexOf(type))
     {
         case 0: //VToolBasePoint::ToolType
@@ -1127,6 +1128,9 @@ void VPattern::ParsePointElement(VMainGraphicsScene *scene, QDomElement &domElem
             break;
         case 23: //VToolPin::ToolType
             ParsePinPoint(domElement, parse);
+            break;
+        case 24: //VToolEuler::ToolType
+            ParseToolEuler(scene, domElement, parse);
             break;
         default:
             VException e(tr("Unknown point type '%1'.").arg(type));
@@ -1308,6 +1312,56 @@ void VPattern::ParseToolEndLine(VMainGraphicsScene *scene, QDomElement &domEleme
         QString angleFix = angle;
 
         VToolEndLine::Create(id, name, typeLine, lineColor, f, angleFix, basePointId, mx, my, scene, this, data,
+                             parse, Source::FromFile);
+        //Rewrite attribute formula. Need for situation when we have wrong formula.
+        if (f != formula || angleFix != angle)
+        {
+            SetAttribute(domElement, AttrLength, f);
+            SetAttribute(domElement, AttrAngle, angleFix);
+            modified = true;
+            haveLiteChange();
+        }
+    }
+    catch (const VExceptionBadId &e)
+    {
+        VExceptionObjectError excep(tr("Error creating or updating point of end line"), domElement);
+        excep.AddMoreInformation(e.ErrorMessage());
+        throw excep;
+    }
+    catch (qmu::QmuParserError &e)
+    {
+        VExceptionObjectError excep(tr("Error creating or updating point of end line"), domElement);
+        excep.AddMoreInformation(QString("Message:     " + e.GetMsg() + "\n"+ "Expression:  " + e.GetExpr()));
+        throw excep;
+    }
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void VPattern::ParseToolEuler(VMainGraphicsScene *scene, QDomElement &domElement, const Document &parse)
+{
+    SCASSERT(scene != nullptr)
+    Q_ASSERT_X(not domElement.isNull(), Q_FUNC_INFO, "domElement is null");
+
+    try
+    {
+        quint32 id = 0;
+        QString name;
+        qreal mx = 0;
+        qreal my = 0;
+        QString typeLine;
+        QString lineColor;
+
+        PointsCommonAttributes(domElement, id, name, mx, my, typeLine, lineColor);
+
+        const QString formula = GetParametrString(domElement, AttrLength, "100.0");
+        QString f = formula;//need for saving fixed formula;
+
+        const quint32 basePointId = GetParametrUInt(domElement, AttrBasePoint, NULL_ID_STR);
+
+        const QString angle = GetParametrString(domElement, AttrAngle, "0.0");
+        QString angleFix = angle;
+
+        VToolEuler::Create(id, name, typeLine, lineColor, f, angleFix, basePointId, mx, my, scene, this, data,
                              parse, Source::FromFile);
         //Rewrite attribute formula. Need for situation when we have wrong formula.
         if (f != formula || angleFix != angle)
@@ -3888,7 +3942,7 @@ QT_WARNING_DISABLE_GCC("-Wswitch-default")
 QRectF VPattern::ActiveDrawBoundingRect() const
 {
     // This check helps to find missed tools in the switch
-    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 53, "Not all tools were used.");
+    Q_STATIC_ASSERT_X(static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were used.");
 
     QRectF rec;
 
@@ -3926,6 +3980,7 @@ QRectF VPattern::ActiveDrawBoundingRect() const
                     rec = ToolBoundingRect<VToolSinglePoint>(rec, tool.getId());
                     break;
                 case Tool::EndLine:
+                case Tool::Euler:
                 case Tool::AlongLine:
                 case Tool::ShoulderPoint:
                 case Tool::Normal:

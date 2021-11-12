@@ -58,6 +58,7 @@
 #include "tools/dialogbisector.h"
 #include "tools/piece/dialogseamallowance.h"
 #include "tools/dialogendline.h"
+#include "tools/dialogeuler.h"
 #include "tools/dialogline.h"
 #include "tools/dialoglineintersect.h"
 #include "tools/dialognormal.h"

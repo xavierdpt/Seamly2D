@@ -23,9 +23,9 @@
 
  ************************************************************************
  **
- **  @file   drawtools.h
+ **  @file   vistooleuler.h
  **  @author Roman Telezhynskyi <dismine(at)gmail.com>
- **  @date   November 15, 2013
+ **  @date   21 7, 2014
  **
  **  @brief
  **  @copyright
@@ -49,43 +49,41 @@
  **
  *************************************************************************/
 
-#ifndef DRAWTOOLS_H
-#define DRAWTOOLS_H
+#ifndef VISTOOLEULER_H
+#define VISTOOLEULER_H
 
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolalongline.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolbisector.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolendline.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtooleuler.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolnormal.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolshoulderpoint.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolheight.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoollineintersectaxis.h"
-#include "toolpoint/toolsinglepoint/toollinepoint/vtoolcurveintersectaxis.h"
-#include "toolcurve/vtoolarc.h"
-#include "toolcurve/vtoolellipticalarc.h"
-#include "toolcurve/vtoolarcwithlength.h"
-#include "toolcurve/vtoolspline.h"
-#include "toolcurve/vtoolcubicbezier.h"
-#include "toolcurve/vtoolsplinepath.h"
-#include "toolcurve/vtoolcubicbezierpath.h"
-#include "vtoolline.h"
-#include "toolpoint/toolsinglepoint/toolcut/vtoolcutspline.h"
-#include "toolpoint/toolsinglepoint/toolcut/vtoolcutsplinepath.h"
-#include "toolpoint/toolsinglepoint/toolcut/vtoolcutarc.h"
-#include "toolpoint/toolsinglepoint/vtoollineintersect.h"
-#include "toolpoint/toolsinglepoint/vtoolpointofcontact.h"
-#include "toolpoint/toolsinglepoint/vtoolbasepoint.h"
-#include "toolpoint/toolsinglepoint/vtooltriangle.h"
-#include "toolpoint/toolsinglepoint/vtoolpointofintersection.h"
-#include "toolpoint/toolsinglepoint/vtoolpointofintersectionarcs.h"
-#include "toolpoint/toolsinglepoint/vtoolpointofintersectioncircles.h"
-#include "toolpoint/toolsinglepoint/vtoolpointofintersectioncurves.h"
-#include "toolpoint/toolsinglepoint/vtoolpointfromcircleandtangent.h"
-#include "toolpoint/toolsinglepoint/vtoolpointfromarcandtangent.h"
-#include "toolpoint/tooldoublepoint/vtooltruedarts.h"
-#include "operation/vtoolrotation.h"
-#include "operation/flipping/vtoolflippingbyline.h"
-#include "operation/flipping/vtoolflippingbyaxis.h"
-#include "operation/vtoolmove.h"
+#include <qcompilerdetection.h>
+#include <QGraphicsItem>
+#include <QMetaObject>
+#include <QObject>
+#include <QString>
+#include <QtGlobal>
 
-#endif // DRAWTOOLS_H
+#include "../vmisc/def.h"
+#include "visline.h"
+
+class VisToolEuler : public VisLine
+{
+    Q_OBJECT
+public:
+    explicit VisToolEuler(const VContainer *data, QGraphicsItem *parent = nullptr);
+    virtual ~VisToolEuler() = default;
+
+    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
+
+    QString      Angle() const;
+    void         SetAngle(const QString &expression);
+
+    QString      Length() const;
+    void         setLength(const QString &expression);
+
+    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
+    enum { Type = UserType + static_cast<int>(Vis::ToolEuler)};
+private:
+    Q_DISABLE_COPY(VisToolEuler)
+    qreal           length;
+    qreal           angle;
+    VScaledEllipse *point;
+};
+
+#endif // VISTOOLEULER_H

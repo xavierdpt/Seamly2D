@@ -189,6 +189,7 @@ enum class Tool : ToolVisHolderType
     EllipticalArc,
     Pin,
     InsertNode,
+    Euler,
     LAST_ONE_DO_NOT_USE //add new stuffs above this, this constant must be last and never used
 };
 
@@ -245,6 +246,7 @@ enum class Vis : ToolVisHolderType
     GrainlineItem,
     PieceItem,
     TextGraphicsItem,
+    ToolEuler,
     LAST_ONE_DO_NOT_USE //add new stuffs above this, this constant must be last and never used
 };
 
